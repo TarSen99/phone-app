@@ -6,6 +6,8 @@ export default class PhoneViewer extends Component{
     constructor({element, onViewerHide}) {
         super({element});
         this._onViewerHide = onViewerHide;
+
+        this._checkTypeOfClick = this._checkTypeOfClick.bind(this);
     }
 
     show(phoneDetails) {
@@ -20,15 +22,30 @@ export default class PhoneViewer extends Component{
     hide() {
         super.hide();
         this._onViewerHide();
+        this._element.removeEventListener('click', this._checkTypeOfClick);
     }
 
     _addClickListeners() {
-         this._backButton = this._element.querySelector('[data-button="back"]');
-         this._addToBusketButton = this._element.querySelector('[data-button="back"]');
+        this._element.addEventListener('click', this._checkTypeOfClick);
+    }
 
-        this._backButton.addEventListener('click', () => {
+    _checkTypeOfClick(e) {
+        let target = e.target;
+
+        if(target.closest('[data-button="back"]')) {
             this.hide();
-        });
+            return;
+        }
+
+        if(target.closest('[data-selectable-img]')) {
+            this._changeMainViewerImage(target.src);
+        }
+    }
+
+    _changeMainViewerImage(src) {
+        let mainImage = this._element.querySelector('.phone');
+
+        mainImage.src = src;
     }
 
     _render() {
@@ -44,13 +61,13 @@ export default class PhoneViewer extends Component{
         
             <ul class="phone-thumbs">
               <li>
-                <img src="img/phones/${this._details.id}.0.jpg">
+                <img data-selectable-img src="img/phones/${this._details.id}.0.jpg">
               </li>
               <li>
-                <img src="img/phones/${this._details.id}.1.jpg">
+                <img data-selectable-img src="img/phones/${this._details.id}.1.jpg">
               </li>
               <li>
-                <img src="img/phones/${this._details.id}.2.jpg">
+                <img data-selectable-img src="img/phones/${this._details.id}.2.jpg">
               </li>
             </ul>
 `;
