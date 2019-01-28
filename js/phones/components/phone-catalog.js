@@ -1,49 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-  <link rel="stylesheet"
-        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-        crossorigin="anonymous">
-  <link rel="stylesheet" href="app.css">
-  <script src="js/main.js" defer></script>
-</head>
-<body>
+'use strict'
 
-  <div class="container-fluid">
-    <div class="row">
+export default class PhoneCatalog {
+    constructor({element}) {
+        this._element = element;
 
-      <!--Sidebar-->
-      <div class="col-md-2">
-        <section>
-          <p>
-            Search:
-            <input>
-          </p>
+        this._render();
+    }
 
-          <p>
-            Sort by:
-            <select>
-              <option value="name">Alphabetical</option>
-              <option value="age">Newest</option>
-            </select>
-          </p>
-        </section>
-
-        <section>
-          <p>Shopping Cart</p>
-          <ul>
-            <li>Phone 1</li>
-            <li>Phone 2</li>
-            <li>Phone 3</li>
-          </ul>
-        </section>
-      </div>
-
-      <!--Main content-->
-      <div class="col-md-10">
+    _render() {
+        this._element.innerHTML = `
         <ul class="phones">
           <li class="thumbnail">
             <a href="#!/phones/motorola-xoom-with-wi-fi" class="thumb">
@@ -197,10 +162,6 @@
             <p>Motorola CHARM fits easily in your pocket or palm. Includes MOTOBLUR service.</p>
           </li>
         </ul>
-
-      </div>
-    </div>
-  </div>
-
-</body>
-</html>
+`;
+    }
+}
