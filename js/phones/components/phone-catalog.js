@@ -48,24 +48,29 @@ export default class PhoneCatalog extends Component{
             ${this._phones
         .map(phone => {
           return `
-                  <li class="thumbnail" data-element="phone" data-element-id="${
-              phone.id}" data-element-name="${
-              phone.name}">
-                        <a href="#!/phones/${phone.id}" data-show-details class="thumb">
-                          <img alt="${phone.id}" src="${phone.imageUrl}">
+                 <li class="thumbnail"
+                    data-element="phone"
+                    data-element-id="${phone.id}"
+                    data-element-name="${phone.name}">
+                     
+                        <a href="#!/phones/${phone.id}"
+                           data-show-details class="thumb">
+                              <img alt="${phone.id}"
+                               src="${phone.imageUrl}">
                         </a>
             
-                        <div data-add-to-bucket class="phones__btn-buy-wrapper">
-                          <a class="btn btn-success">
+                        <div class="phones__btn-buy-wrapper">
+                          <a data-add-to-bucket
+                           class="btn btn-success">
                             Add
                           </a>
                         </div>
             
-                        <a data-show-details href="#!/phones/motorola-xoom-with-wi-fi">${
-              phone.name
-              }</a>
+                        <a data-show-details
+                         href="#!/phones/motorola-xoom-with-wi-fi">${phone.name}
+                         </a>
                         <p>${phone.snippet} 
-                   </li>
+                  </li>
                 `;
         })
         .join("")}
