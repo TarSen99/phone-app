@@ -3,9 +3,9 @@
 import Component from './../../component.js';
 
 export default class PhoneViewer extends Component{
-    constructor({element, onViewerHide, onAddButtonClicked}) {
+    constructor({element, onBackButtonClicked, onAddButtonClicked}) {
         super({element});
-        this._onViewerHide = onViewerHide;
+        this._onViewerHide = onBackButtonClicked;
         this._addToShopingCart = onAddButtonClicked;
         this._element.addEventListener('click', (e) => {
             this._checkTypeOfClick(e)
@@ -28,7 +28,6 @@ export default class PhoneViewer extends Component{
     }
 
     _checkTypeOfClick(e) {
-        console.log('hello');
         let target = e.target;
 
         if(target.closest('[data-button="back"]')) {
