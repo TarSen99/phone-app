@@ -7,6 +7,9 @@ export default class PhoneViewer extends Component{
         super({element});
         this._onViewerHide = onViewerHide;
         this._addToShopingCart = onAddButtonClicked;
+        this._element.addEventListener('click', (e) => {
+            this._checkTypeOfClick(e)
+        });
 
         this._checkTypeOfClick = this._checkTypeOfClick.bind(this);
     }
@@ -14,7 +17,6 @@ export default class PhoneViewer extends Component{
     show(phoneDetails) {
         this._details = phoneDetails;
         this._render();
-        this._addClickListeners();
 
         super.show();
     }
@@ -23,14 +25,10 @@ export default class PhoneViewer extends Component{
     hide() {
         super.hide();
         this._onViewerHide();
-        this._element.removeEventListener('click', this._checkTypeOfClick);
-    }
-
-    _addClickListeners() {
-        this._element.addEventListener('click', this._checkTypeOfClick);
     }
 
     _checkTypeOfClick(e) {
+        console.log('hello');
         let target = e.target;
 
         if(target.closest('[data-button="back"]')) {
