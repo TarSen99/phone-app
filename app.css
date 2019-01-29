@@ -108,7 +108,7 @@ h1 {
 
 .shopping-card-item {
   position: relative;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 .shopping-card-count {
@@ -118,7 +118,7 @@ h1 {
 .shopping-card-remove {
   cursor: pointer;
   position: absolute;
-  top: -12px;
+  top: -15px;
   right: 0;
   color: red;
 }
