@@ -3,13 +3,22 @@
 import PhoneCatalog from './components/phone-catalog.js';
 import PhoneViewer from './components/phone-viewer.js';
 import PhoneService from './services/phone-service.js';
+import SideBar from './components/sidebar.js';
 
 
 export default class PhonesPage {
     constructor( {element}) {
         this._element = element;
 
+        this.onAddToBucketButtonClicked = (phoneId, phoneName) => {
+            this._sideBar.addItemToShoppingCart(phoneId, phoneName);
+        };
+
         this._render();
+
+        this._sideBar = new SideBar({
+            element: document.querySelector('[data-component="sidebar"]')}
+            );
 
         this._catalog = new PhoneCatalog({
             element: document.querySelector('[data-component="phone-catalog"]'),
@@ -20,7 +29,9 @@ export default class PhonesPage {
 
                 this._catalog.hide();
                 this._viewer.show(phoneDetails);
-            }
+            },
+
+            onAddButtonClicked: this.onAddToBucketButtonClicked
 
         });
 
@@ -29,7 +40,9 @@ export default class PhonesPage {
 
             onViewerHide: () => {
                 this._catalog.show();
-            }
+            },
+
+            onAddButtonClicked: this.onAddToBucketButtonClicked
         });
     }
 
@@ -39,31 +52,8 @@ export default class PhonesPage {
 
       <!--Sidebar-->
       <div class="col-md-2">
-        <section>
-          <p>
-            Search:
-            <input>
-          </p>
-
-          <p>
-            Sort by:
-            <select>
-              <option value="name">Alphabetical</option>
-              <option value="age">Newest</option>
-            </select>
-          </p>
-        </section>
-
-        <section>
-          <p>Shopping Cart</p>
-          <ul>
-            <li>Phone 1</li>
-            <li>Phone 2</li>
-            <li>Phone 3</li>
-          </ul>
-        </section>
+          <div data-component="sidebar"></div>
       </div>
-
       <!--Main content-->
       <div class="col-md-10">
         <div data-component="phone-catalog"></div>

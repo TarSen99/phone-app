@@ -105,3 +105,20 @@ ul.specs dt {
 h1 {
   border-bottom: 1px solid gray;
 }
+
+.shopping-card-item {
+  position: relative;
+  margin-top: 10px;
+}
+
+.shopping-card-count {
+  color: green;
+}
+
+.shopping-card-remove {
+  cursor: pointer;
+  position: absolute;
+  top: -12px;
+  right: 0;
+  color: red;
+}

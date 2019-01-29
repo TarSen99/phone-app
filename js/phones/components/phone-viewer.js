@@ -3,9 +3,10 @@
 import Component from './../../component.js';
 
 export default class PhoneViewer extends Component{
-    constructor({element, onViewerHide}) {
+    constructor({element, onViewerHide, onAddButtonClicked}) {
         super({element});
         this._onViewerHide = onViewerHide;
+        this._addToShopingCart = onAddButtonClicked;
 
         this._checkTypeOfClick = this._checkTypeOfClick.bind(this);
     }
@@ -37,8 +38,14 @@ export default class PhoneViewer extends Component{
             return;
         }
 
+        if(target.closest('[data-button="add-to-basket"]')) {
+            this._addToShopingCart(this._details.id, this._details.name);
+            return;
+        }
+
         if(target.closest('[data-selectable-img]')) {
             this._changeMainViewerImage(target.src);
+            return;
         }
     }
 
