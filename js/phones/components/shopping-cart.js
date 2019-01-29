@@ -1,23 +1,22 @@
-export default class ShoppingCart {
+import Component from "../../component.js";
+
+export default class ShoppingCart extends Component{
     constructor({element}) {
-        this._element = element;
+        super({element});
+
         this._bucketItems = [];
         this._render();
 
-        this._list = this._element.querySelector('[data-bucket-list]');
-
-        this._element.addEventListener('click', (e) => {this._removeItem(e)});
+        this.on('click', '.shopping-card-remove', (e) => {
+            this._removeItem(e)
+        });
     }
 
     _removeItem(e) {
-        if(!e.target.closest('.shopping-card-remove')) {
-            return;
-        }
-
-        let CurrentListItem = e.target.closest('.shopping-card-item');
+        let currentListItem = e.target.closest('.shopping-card-item');
 
         let requirePosToRemove = this._findPositionOfCurrentIdInArray(
-            CurrentListItem.dataset.itemId
+            currentListItem.dataset.itemId
         );
 
         this._bucketItems.splice(requirePosToRemove, 1);

@@ -5,38 +5,34 @@ import Component from './../../component.js';
 export default class PhoneCatalog extends Component{
   constructor({
                 element,
-                phones = [],
-                onPhoneSelected = () => {
-                },
-                onAddButtonClicked = () => {
-                }
+                phones = []
 
   }) {
     super({ element });
 
     this._phones = phones;
-    this._showPhoneDetails = onPhoneSelected;
-    this._addItemToShoppingCart = onAddButtonClicked;
 
-    this._element.addEventListener("click", event => {
-      let target = event.target;
-      let phoneElement = target.closest('[data-element="phone"]');
+    this.on('click', '[data-element="phone"]', (event) => {
+        let target = event.target;
+        let phoneElement = target.closest('[data-element="phone"]');
 
-      if (!phoneElement) {
-        return;
-      }
+        if(target.closest('[data-show-details]')) {
+            this.emit(
+                'phone-selected',
+                phoneElement.dataset.elementId
+            );
 
-      if(target.closest('[data-show-details]')) {
-        this._showPhoneDetails(phoneElement.dataset.elementId);
-      }
+            return;
+        }
 
-      if(target.closest('[data-add-to-bucket]')) {
-        this._addItemToShoppingCart(
-            phoneElement.dataset.elementId,
-            phoneElement.dataset.elementName);
-      }
+        if(target.closest('[data-add-to-bucket]')) {
+            this.emit('add-button-clicked',
+                phoneElement.dataset.elementId,
+                phoneElement.dataset.elementId
+            );
 
-
+            return;
+        }
     });
 
     this._render();
@@ -67,13 +63,13 @@ export default class PhoneCatalog extends Component{
                         </div>
             
                         <a data-show-details
-                         href="#!/phones/motorola-xoom-with-wi-fi">${phone.name}
+                         href="#!/phones/motorola-xoom-with-wi-fi">
+                            ${phone.name}
                          </a>
                         <p>${phone.snippet} 
                   </li>
                 `;
-        })
-        .join("")}
+        }).join('')}
          </ul>   
 `;
   }
