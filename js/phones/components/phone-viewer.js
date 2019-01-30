@@ -6,9 +6,32 @@ export default class PhoneViewer extends Component {
     constructor({element}) {
         super({element});
 
-        this.on('click', '[data-element="phone-viewer"]', (e) => {
-            this._checkTypeOfClick(e);
-        });
+        this._initEventListeners();
+    }
+
+    _initEventListeners() {
+        this.on('click',
+            '[data-button="back"]',
+            () => {
+                this.hide();
+                this.emit('back-button-clicked');
+            });
+
+        this.on('click',
+            '[data-button="add-to-basket"]',
+            () => {
+                this.emit(
+                    'add-button-clicked',
+                    this._details.id,
+                    this._details.name
+                );
+            });
+
+        this.on('click',
+            '[data-selectable-img]',
+            (e) => {
+                this._changeMainViewerImage(e.target.src);
+            });
     }
 
     show(phoneDetails) {
@@ -16,32 +39,6 @@ export default class PhoneViewer extends Component {
         this._render();
 
         super.show();
-    }
-
-    _checkTypeOfClick(e) {
-        let target = e.target;
-
-        if (target.closest('[data-button="back"]')) {
-            this.hide();
-            this.emit('back-button-clicked');
-
-            return;
-        }
-
-        if (target.closest('[data-button="add-to-basket"]')) {
-            this.emit(
-                'add-button-clicked',
-                this._details.id,
-                this._details.name
-            );
-
-            return;
-        }
-
-        if (target.closest('[data-selectable-img]')) {
-            this._changeMainViewerImage(target.src);
-            return;
-        }
     }
 
     _changeMainViewerImage(src) {

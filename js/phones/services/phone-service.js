@@ -226,7 +226,32 @@ const PhoneService = {
     getById() {
 
         return phoneDetails;
+    },
+
+    sort(phonesToSort, type) {
+        return phonesToSort.sort(PhoneService.sortTypes[type]);
+    },
+
+    sortTypes: {
+        name: compareByName,
+        age: compareByDate
     }
 };
+
+function compareByName(a, b) {
+    if(a.name > b.name) {
+        return 1;
+    } else {
+        return -1;
+    }
+}
+
+function compareByDate(a, b) {
+    if(a.age > b.age) {
+        return 1;
+    } else {
+        return -1;
+    }
+}
 
 export default PhoneService;
