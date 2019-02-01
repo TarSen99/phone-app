@@ -1,28 +1,25 @@
 import Component from "../../component.js";
 
-export default class PhoneOrder extends Component{
-    constructor({element, phones, makeOrder}) {
-        super({element});
-        this._phones = phones;
-        this._makeOrder = makeOrder;
+export default class PhoneOrder extends Component {
+  constructor({ element }) {
+    super({ element });
+    this._render();
+    this._orderValue = "";
+    this._select = this._element.querySelector('[data-element="select"]');
 
-        this.on('change', '[data-element="select"]', () => {
-            let orderSelect = this._element.querySelector('[data-element="select"]');
-            let orderValue = orderSelect.value;
-            let orderedArr = this._makeOrder(this._phones, orderValue);
+    this.on("change", '[data-element="select"]', () => {
+      this._orderValue = this._select.value;
 
-            this.emit('order-changed', orderedArr);
-        });
+      this.emit("order-changed");
+    });
+  }
 
-        this._render();
-    }
+  getOrderValue() {
+    return this._orderValue;
+  }
 
-    updatePhonesList(phones) {
-        this._phones = phones;
-    }
-
-    _render() {
-        this._element.innerHTML = `
+  _render() {
+    this._element.innerHTML = `
                   <p>
                     Sort by:
                     <select data-element="select">
@@ -31,6 +28,5 @@ export default class PhoneOrder extends Component{
                     </select>
                   </p>
         `;
-    }
-
+  }
 }

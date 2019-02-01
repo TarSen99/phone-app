@@ -1,54 +1,47 @@
 import Component from "../../component.js";
 
-export default class PhoneFilter extends Component{
-    constructor({element, phones}) {
-        super({element});
-        this._phones = phones;
+const INPUT_CHANGE_DELAY = 300;
 
-        this._render();
-        this._findSimilarItemsWrapper = this._debounce(this._getSimilarItems, 500);
+export default class PhoneFilter extends Component {
+  constructor({ element }) {
+    super({ element });
+    this._render();
+    this._inputEventName = "input-enter";
+    this._inputValue = "";
+    this._input = this._element.querySelector('[data-element="input"]');
 
-        this.on('input', '[data-element="input"]', this._findSimilarItemsWrapper);
-    }
+    this._makeInputEvent = this._debounce(
+      this._makeInputEvent.bind(this),
+      INPUT_CHANGE_DELAY
+    );
 
-    _debounce(f, delay) {
-        let timerId;
+    this.on("input", '[data-element="input"]', this._makeInputEvent);
+  }
 
-        return () => {
-            clearTimeout(timerId);
-            timerId = setTimeout(f.bind(this), delay);
-        }
-    }
+  getFilterValue() {
+    return this._inputValue;
+  }
 
-    _getSimilarItems() {
-        let filteredPhones = this._filterPhones();
+  _makeInputEvent() {
+    this._inputValue = this._input.value;
+    this.emit(this._inputEventName);
+  }
 
-        this.emit('input-enter', filteredPhones);
-    }
+  _debounce(f, delay) {
+    let timerId;
 
-    _filterPhones() {
-        let input = this._element.querySelector('[data-element="input"]');
-        let inputValue = input.value.toLowerCase()
-            .trim();
+    return () => {
+      clearTimeout(timerId);
+      timerId = setTimeout(f, delay);
+    };
+  }
 
-        let filteredPhones = this._phones.filter(phone => {
-           let phoneName = phone.name.toLowerCase().
-            trim();
-
-           if(phoneName.indexOf(inputValue) === 0) {
-               return phone.name;
-           }
-       });
-
-       return filteredPhones;
-    }
-
-    _render() {
-        this._element.innerHTML = `
+  _render() {
+    this._element.innerHTML = `
                   <p>
                     Search:
                     <input data-element="input">
                   </p>
         `;
-    }
+  }
 }
