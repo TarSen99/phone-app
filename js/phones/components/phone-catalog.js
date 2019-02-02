@@ -41,7 +41,7 @@ export default class PhoneCatalog extends Component {
   _render() {
     this._element.innerHTML = `
         ${
-          this._phones.length > 1
+          this._phones.length > 0
             ? `
             <ul class="phones">
                 ${this._phones

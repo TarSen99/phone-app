@@ -14,9 +14,9 @@ export default class PhonesPage {
     this._render();
     this._initPhoneFilter();
     this._initPhoneOrdering();
+    this._initShoppingCart();
     this._initCatalog();
     this._initViewer();
-    this._initShoppingCart();
   }
 
   _showPhones() {

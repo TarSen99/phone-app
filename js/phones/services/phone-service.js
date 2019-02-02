@@ -59,6 +59,8 @@ const PhoneService = {
   },
 
   _filterPhones(filterValue, phones) {
+    filterValue = filterValue.toLowerCase();
+
     return phones.filter(phone => {
       let phoneName = phone.name.toLowerCase().trim();
 
