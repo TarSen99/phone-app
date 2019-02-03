@@ -25,8 +25,14 @@ export default class PhonesPage {
       orderValue: this._phoneOrdering.getOrderValue()
     };
 
-    let phones = PhoneService.getAll(searchSettings);
-    this._catalog.show(phones);
+    this._catalog.show = this._catalog.show.bind(this._catalog);
+    const PhonesListId = "phones";
+
+    PhoneService.loadDataFromServer(
+      PhonesListId,
+      this._catalog.show,
+      searchSettings
+    );
   }
 
   _initPhoneOrdering() {
@@ -75,10 +81,12 @@ export default class PhonesPage {
     });
 
     this._catalog.subscribe("phone-selected", phoneId => {
-      const phoneDetails = PhoneService.getById(phoneId);
-
       this._catalog.hide();
-      this._viewer.show(phoneDetails);
+
+      PhoneService.loadDataFromServer(
+        phoneId,
+        this._viewer.show.bind(this._viewer)
+      );
     });
 
     this._catalog.subscribe("add-button-clicked", (phoneId, phoneName) => {

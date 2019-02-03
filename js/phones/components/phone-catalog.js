@@ -76,8 +76,8 @@ export default class PhoneCatalog extends Component {
                             </p> 
                       </li>
                     `;
-                  })
-                  .join("")}
+                  }).join("")
+                }
              </ul>`
             : '<p class="element-empty">Such item is not exist</p>'
         }`;

@@ -1,21 +1,4 @@
-const getDataFromServer = (id) => {
-  const xhr = new XMLHttpRequest();
-
-  xhr.open(
-    'GET',
-    `https://mate-academy.github.io/phone-catalogue-static/phones/${id}.json`,
-    false
-  );
-
-  xhr.send();
-
-  if (xhr.status !== 200) {
-    console.log(`${xhr.status} : ${xhr.statusText}`);
-    return;
-  }
-
-  return JSON.parse(xhr.responseText);
-};
+const xhr = new XMLHttpRequest();
 
 const compareByName = (a, b) => {
   if (a.name > b.name) {
@@ -33,25 +16,63 @@ const compareByDate = (a, b) => {
   }
 };
 
-const PhoneService = {
-  phonesFromServer: [],
+const getDataFromServer = (id, showMethod, getMethod, searchSettings) => {
+  xhr.open(
+    "GET",
+    `https://mate-academy.github.io/phone-catalogue-static/phones/${id}.json`,
+    true
+  );
 
-  phoneDetails: {},
+  xhr.onload = function() {
+    if (!searchSettings) {
+      PhoneService._phoneDetails = JSON.parse(this.responseText);
+      let PhoneDetails = getMethod();
+      showMethod(PhoneDetails);
 
-  getAll({ filterValue = "", orderValue = "" } = {}) {
-    const catalogListId = 'phones';
-    this.phonesFromServer = getDataFromServer(catalogListId);
-
-    if(!this.phonesFromServer) {
       return;
     }
 
-    let filteredPhones = this._filterPhones(filterValue, this.phonesFromServer);
+    PhoneService._phonesFromServer = JSON.parse(this.responseText);
+    let phones = getMethod(searchSettings);
+    showMethod(phones);
+  };
+
+  xhr.send();
+
+  if (xhr.status !== 200) {
+    console.log(`${xhr.status} : ${xhr.statusText}`);
+  }
+};
+
+const PhoneService = {
+  _phonesFromServer: [],
+
+  _phoneDetails: {},
+
+  loadDataFromServer(id, showMethod, searchSettings) {
+    getDataFromServer(
+      id,
+      showMethod,
+      searchSettings ? this.getAll.bind(this) : this.getById.bind(this),
+      searchSettings
+    );
+  },
+
+  getAll({ filterValue = "", orderValue = "" } = {}) {
+    if (!this._phonesFromServer) {
+      return;
+    }
+
+    let filteredPhones = this._filterPhones(
+      filterValue,
+      this._phonesFromServer
+    );
+
     return this._sort(orderValue, filteredPhones);
   },
 
-  getById(phoneId) {
-    return getDataFromServer(phoneId);
+  getById() {
+    return this._phoneDetails;
   },
 
   _sort(orderValue, phones) {
