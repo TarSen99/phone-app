@@ -25,7 +25,11 @@ export default class Component {
   }
 
   subscribe(eventName, callback) {
-    this._callbacksMap[eventName] = callback;
+    if(!this._callbacksMap[eventName]) {
+      this._callbacksMap[eventName] = [];
+    }
+
+    this._callbacksMap[eventName].push(callback);
   }
 
   emit(eventName, ...args) {
@@ -33,6 +37,8 @@ export default class Component {
       return;
     }
 
-    this._callbacksMap[eventName](...args);
+    this._callbacksMap[eventName].forEach(callback => {
+      callback(...args);
+    });
   }
 }
