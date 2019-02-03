@@ -4,6 +4,10 @@ export default class Component {
     this._callbacksMap = {};
   }
 
+  _renderWhileLoading() {
+    this._element.innerHTML = '<p class="loader">Data is Loading...</p>';
+  }
+
   show() {
     this._element.hidden = false;
   }
@@ -25,7 +29,7 @@ export default class Component {
   }
 
   subscribe(eventName, callback) {
-    if(!this._callbacksMap[eventName]) {
+    if (!this._callbacksMap[eventName]) {
       this._callbacksMap[eventName] = [];
     }
 

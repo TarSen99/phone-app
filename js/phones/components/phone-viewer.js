@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-import Component from "./../../component.js";
+import Component from './../../component.js';
 
 export default class PhoneViewer extends Component {
   constructor({ element }) {
@@ -10,16 +10,16 @@ export default class PhoneViewer extends Component {
   }
 
   _initEventListeners() {
-    this.on("click", '[data-button="back"]', () => {
+    this.on('click', '[data-button="back"]', () => {
       this.hide();
-      this.emit("back-button-clicked");
+      this.emit('back-button-clicked');
     });
 
-    this.on("click", '[data-button="add-to-basket"]', () => {
-      this.emit("add-button-clicked", this._details.id, this._details.name);
+    this.on('click', '[data-button="add-to-basket"]', () => {
+      this.emit('add-button-clicked', this._details.id, this._details.name);
     });
 
-    this.on("click", "[data-selectable-img]", e => {
+    this.on('click', '[data-selectable-img]', e => {
       this._changeMainViewerImage(e.target.src);
     });
   }
@@ -32,7 +32,7 @@ export default class PhoneViewer extends Component {
   }
 
   _changeMainViewerImage(src) {
-    let mainImage = this._element.querySelector(".phone");
+    let mainImage = this._element.querySelector('.phone');
 
     mainImage.src = src;
   }
@@ -60,7 +60,7 @@ export default class PhoneViewer extends Component {
                         </li>
                        `;
                   })
-                  .join("")}    
+                  .join('')}    
             </ul>
         </div>
        `;

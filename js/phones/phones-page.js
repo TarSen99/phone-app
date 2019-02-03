@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
-import PhoneCatalog from "./components/phone-catalog.js";
-import PhoneViewer from "./components/phone-viewer.js";
-import PhoneService from "./services/phone-service.js";
-import ShoppingCart from "./components/shopping-cart.js";
-import PhoneFilter from "./components/phone-filter.js";
-import PhoneOrder from "./components/phone-ordering.js";
+import PhoneCatalog from './components/phone-catalog.js';
+import PhoneViewer from './components/phone-viewer.js';
+import PhoneService from './services/phone-service.js';
+import ShoppingCart from './components/shopping-cart.js';
+import PhoneFilter from './components/phone-filter.js';
+import PhoneOrder from './components/phone-ordering.js';
 
 export default class PhonesPage {
   constructor({ element }) {
@@ -26,9 +26,10 @@ export default class PhonesPage {
     };
 
     this._catalog.show = this._catalog.show.bind(this._catalog);
-    const PhonesListId = "phones";
+    const PhonesListId = 'phones';
 
     PhoneService.loadDataFromServer(
+      this._catalog._renderWhileLoading.bind(this._catalog),
       PhonesListId,
       this._catalog.show,
       searchSettings
@@ -40,7 +41,7 @@ export default class PhonesPage {
       element: this._element.querySelector('[data-component="phone-order"]')
     });
 
-    this._phoneOrdering.subscribe("order-changed", () => {
+    this._phoneOrdering.subscribe('order-changed', () => {
       this._showPhones();
     });
   }
@@ -50,7 +51,7 @@ export default class PhonesPage {
       element: this._element.querySelector('[data-component="phone-filter"]')
     });
 
-    this._phoneFilter.subscribe("input-enter", () => {
+    this._phoneFilter.subscribe('input-enter', () => {
       this._showPhones();
     });
   }
@@ -66,11 +67,11 @@ export default class PhonesPage {
       element: document.querySelector('[data-component="phone-viewer"]')
     });
 
-    this._viewer.subscribe("back-button-clicked", () => {
+    this._viewer.subscribe('back-button-clicked', () => {
       this._showPhones();
     });
 
-    this._viewer.subscribe("add-button-clicked", (phoneId, phoneName) => {
+    this._viewer.subscribe('add-button-clicked', (phoneId, phoneName) => {
       this._shoppingCart.addNewItemToList(phoneId, phoneName);
     });
   }
@@ -80,16 +81,17 @@ export default class PhonesPage {
       element: document.querySelector('[data-component="phone-catalog"]')
     });
 
-    this._catalog.subscribe("phone-selected", phoneId => {
+    this._catalog.subscribe('phone-selected', phoneId => {
       this._catalog.hide();
 
       PhoneService.loadDataFromServer(
+        this._viewer._renderWhileLoading.bind(this._viewer),
         phoneId,
         this._viewer.show.bind(this._viewer)
       );
     });
 
-    this._catalog.subscribe("add-button-clicked", (phoneId, phoneName) => {
+    this._catalog.subscribe('add-button-clicked', (phoneId, phoneName) => {
       this._shoppingCart.addNewItemToList(phoneId, phoneName);
     });
 

@@ -1,4 +1,4 @@
-import Component from "../../component.js";
+import Component from '../../component.js';
 
 export default class ShoppingCart extends Component {
   constructor({ element }) {
@@ -7,13 +7,13 @@ export default class ShoppingCart extends Component {
     this._bucketItems = [];
     this._render();
 
-    this.on("click", ".shopping-card-remove", e => {
+    this.on('click', '.shopping-card-remove', e => {
       this._removeItem(e);
     });
   }
 
   _removeItem(e) {
-    let currentListItem = e.target.closest(".shopping-card-item");
+    let currentListItem = e.target.closest('.shopping-card-item');
 
     let requirePosToRemove = this._bucketItems.findIndex(
       item => item.id === currentListItem.dataset.itemId
@@ -64,8 +64,8 @@ export default class ShoppingCart extends Component {
                                     </span>
                                 </li>
                             `;
-                          }).join("")
-                       }`
+                          })
+                          .join('')}`
                     : '<p class="element-empty">Bucket is empty</p>'
                 }
                      </ul>`;

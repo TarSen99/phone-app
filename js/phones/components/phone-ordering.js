@@ -1,16 +1,16 @@
-import Component from "../../component.js";
+import Component from '../../component.js';
 
 export default class PhoneOrder extends Component {
   constructor({ element }) {
     super({ element });
     this._render();
-    this._orderValue = "";
+    this._orderValue = '';
     this._select = this._element.querySelector('[data-element="select"]');
 
-    this.on("change", '[data-element="select"]', () => {
+    this.on('change', '[data-element="select"]', () => {
       this._orderValue = this._select.value;
 
-      this.emit("order-changed");
+      this.emit('order-changed');
     });
   }
 

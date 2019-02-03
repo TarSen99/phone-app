@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-import Component from "./../../component.js";
+import Component from './../../component.js';
 
 export default class PhoneCatalog extends Component {
   constructor({ element }) {
@@ -19,19 +19,19 @@ export default class PhoneCatalog extends Component {
   }
 
   _initEventListeners() {
-    this.on("click", "[data-show-details]", event => {
+    this.on('click', '[data-show-details]', event => {
       let target = event.target;
       let phoneElement = target.closest('[data-element="phone"]');
 
-      this.emit("phone-selected", phoneElement.dataset.elementId);
+      this.emit('phone-selected', phoneElement.dataset.elementId);
     });
 
-    this.on("click", "[data-add-to-bucket]", event => {
+    this.on('click', '[data-add-to-bucket]', event => {
       let target = event.target;
       let phoneElement = target.closest('[data-element="phone"]');
 
       this.emit(
-        "add-button-clicked",
+        'add-button-clicked',
         phoneElement.dataset.elementId,
         phoneElement.dataset.elementName
       );
@@ -76,8 +76,8 @@ export default class PhoneCatalog extends Component {
                             </p> 
                       </li>
                     `;
-                  }).join("")
-                }
+                  })
+                  .join('')}
              </ul>`
             : '<p class="element-empty">Such item is not exist</p>'
         }`;

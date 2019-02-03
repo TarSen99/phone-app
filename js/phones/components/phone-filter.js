@@ -1,4 +1,4 @@
-import Component from "../../component.js";
+import Component from '../../component.js';
 
 const INPUT_CHANGE_DELAY = 300;
 
@@ -6,8 +6,8 @@ export default class PhoneFilter extends Component {
   constructor({ element }) {
     super({ element });
     this._render();
-    this._inputEventName = "input-enter";
-    this._inputValue = "";
+    this._inputEventName = 'input-enter';
+    this._inputValue = '';
     this._input = this._element.querySelector('[data-element="input"]');
 
     this._makeInputEvent = this._debounce(
@@ -15,7 +15,7 @@ export default class PhoneFilter extends Component {
       INPUT_CHANGE_DELAY
     );
 
-    this.on("input", '[data-element="input"]', this._makeInputEvent);
+    this.on('input', '[data-element="input"]', this._makeInputEvent);
   }
 
   getFilterValue() {

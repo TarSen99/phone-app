@@ -18,7 +18,7 @@ const compareByDate = (a, b) => {
 
 const getDataFromServer = (id, showMethod, getMethod, searchSettings) => {
   xhr.open(
-    "GET",
+    'GET',
     `https://mate-academy.github.io/phone-catalogue-static/phones/${id}.json`,
     true
   );
@@ -49,7 +49,8 @@ const PhoneService = {
 
   _phoneDetails: {},
 
-  loadDataFromServer(id, showMethod, searchSettings) {
+  loadDataFromServer(updateState, id, showMethod, searchSettings) {
+    updateState();
     getDataFromServer(
       id,
       showMethod,
@@ -58,7 +59,7 @@ const PhoneService = {
     );
   },
 
-  getAll({ filterValue = "", orderValue = "" } = {}) {
+  getAll({ filterValue = '', orderValue = '' } = {}) {
     if (!this._phonesFromServer) {
       return;
     }
