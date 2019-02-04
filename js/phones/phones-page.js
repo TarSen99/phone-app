@@ -25,14 +25,13 @@ export default class PhonesPage {
       orderValue: this._phoneOrdering.getOrderValue()
     };
 
-    this._catalog.show = this._catalog.show.bind(this._catalog);
-    const PhonesListId = 'phones';
-
-    PhoneService.loadDataFromServer(
+    PhoneService.getAll(
       this._catalog._renderWhileLoading.bind(this._catalog),
-      PhonesListId,
-      this._catalog.show,
-      searchSettings
+      searchSettings,
+      phones => {
+        this._viewer.hide();
+        this._catalog.show(phones);
+      }
     );
   }
 
@@ -82,12 +81,12 @@ export default class PhonesPage {
     });
 
     this._catalog.subscribe('phone-selected', phoneId => {
-      this._catalog.hide();
-
-      PhoneService.loadDataFromServer(
-        this._viewer._renderWhileLoading.bind(this._viewer),
+      PhoneService.getById(
         phoneId,
-        this._viewer.show.bind(this._viewer)
+        (phoneDetails) => {
+          this._catalog.hide();
+          this._viewer.show(phoneDetails);
+        }
       );
     });
 

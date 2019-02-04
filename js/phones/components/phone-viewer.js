@@ -5,6 +5,7 @@ import Component from './../../component.js';
 export default class PhoneViewer extends Component {
   constructor({ element }) {
     super({ element });
+    this._details = {};
 
     this._initEventListeners();
   }
@@ -25,8 +26,10 @@ export default class PhoneViewer extends Component {
   }
 
   show(phoneDetails) {
-    this._details = phoneDetails;
-    this._render();
+    if(phoneDetails) {
+      this._details = phoneDetails;
+      this._render();
+    }
 
     super.show();
   }

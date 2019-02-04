@@ -16,7 +16,7 @@ const compareByDate = (a, b) => {
   }
 };
 
-const getDataFromServer = (id, showMethod, getMethod, searchSettings) => {
+const getDataFromServer = (id, callback) => {
   xhr.open(
     'GET',
     `https://mate-academy.github.io/phone-catalogue-static/phones/${id}.json`,
@@ -24,56 +24,46 @@ const getDataFromServer = (id, showMethod, getMethod, searchSettings) => {
   );
 
   xhr.onload = function() {
-    if (!searchSettings) {
-      PhoneService._phoneDetails = JSON.parse(this.responseText);
-      let PhoneDetails = getMethod();
-      showMethod(PhoneDetails);
+    PhoneService._dataFromServer = JSON.parse(this.responseText);
+    callback();
+  };
 
-      return;
+  xhr.onloadend = function () {
+    if (xhr.status !== 200) {
+      console.log(`${xhr.status} : ${xhr.statusText}`);
     }
-
-    PhoneService._phonesFromServer = JSON.parse(this.responseText);
-    let phones = getMethod(searchSettings);
-    showMethod(phones);
   };
 
   xhr.send();
 
-  if (xhr.status !== 200) {
-    console.log(`${xhr.status} : ${xhr.statusText}`);
-  }
 };
 
 const PhoneService = {
-  _phonesFromServer: [],
+  _dataFromServer: null,
 
-  _phoneDetails: {},
+  getAll(setLoadingState, { filterValue = '', orderValue = '' } = {}, callback) {
+    setLoadingState();
+    const phonesListId = 'phones';
 
-  loadDataFromServer(updateState, id, showMethod, searchSettings) {
-    updateState();
-    getDataFromServer(
-      id,
-      showMethod,
-      searchSettings ? this.getAll.bind(this) : this.getById.bind(this),
-      searchSettings
-    );
+    getDataFromServer(phonesListId, () => {
+      if (!this._dataFromServer) {
+        return;
+      }
+
+      let filteredPhones = this._filterPhones(
+        filterValue,
+        this._dataFromServer
+      );
+
+      let phones =  this._sort(orderValue, filteredPhones);
+      callback(phones);
+    });
   },
 
-  getAll({ filterValue = '', orderValue = '' } = {}) {
-    if (!this._phonesFromServer) {
-      return;
-    }
-
-    let filteredPhones = this._filterPhones(
-      filterValue,
-      this._phonesFromServer
-    );
-
-    return this._sort(orderValue, filteredPhones);
-  },
-
-  getById() {
-    return this._phoneDetails;
+  getById(phoneId, callback) {
+    getDataFromServer(phoneId, () => {
+      callback(this._dataFromServer);
+    });
   },
 
   _sort(orderValue, phones) {
