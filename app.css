@@ -129,3 +129,34 @@ h1 {
   text-align: center;
   font-size: 20px;
 }
+
+.catalog-select-block {
+  padding-left: 40px;
+}
+
+.catalog-select-buttons {
+  padding-left: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+}
+
+.catalog-select-button {
+  padding: 10px;
+  margin-left: 10px;
+  outline: none;
+  border: 1px solid black;
+}
+
+.catalog-select-button--active {
+  background-color: darkseagreen;
+}
+
+.page-block-list {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}

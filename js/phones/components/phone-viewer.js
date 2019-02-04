@@ -26,7 +26,7 @@ export default class PhoneViewer extends Component {
   }
 
   show(phoneDetails) {
-    if(phoneDetails) {
+    if (phoneDetails) {
       this._details = phoneDetails;
       this._render();
     }

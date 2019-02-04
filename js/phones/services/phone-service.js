@@ -28,20 +28,28 @@ const getDataFromServer = (id, callback) => {
     callback();
   };
 
-  xhr.onloadend = function () {
+  xhr.onloadend = function() {
     if (xhr.status !== 200) {
       console.log(`${xhr.status} : ${xhr.statusText}`);
     }
   };
 
   xhr.send();
-
 };
 
 const PhoneService = {
   _dataFromServer: null,
 
-  getAll(setLoadingState, { filterValue = '', orderValue = '' } = {}, callback) {
+  getAll(
+    setLoadingState,
+    {
+      filterValue = '',
+      orderValue = '',
+      itemsAmount = 10,
+      currentPage = 0
+    } = {},
+    callback
+  ) {
     setLoadingState();
     const phonesListId = 'phones';
 
@@ -55,8 +63,18 @@ const PhoneService = {
         this._dataFromServer
       );
 
-      let phones =  this._sort(orderValue, filteredPhones);
-      callback(phones);
+      let pageCount = Math.ceil(filteredPhones.length / itemsAmount);
+      console.log(pageCount);
+
+      filteredPhones = filteredPhones.filter((item, index) => {
+        return (
+          index >= currentPage * itemsAmount &&
+          index < currentPage * itemsAmount + itemsAmount
+        );
+      });
+
+      let phones = this._sort(orderValue, filteredPhones);
+      callback(phones, pageCount);
     });
   },
 
