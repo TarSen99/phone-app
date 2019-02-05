@@ -66,7 +66,7 @@ export default class ShoppingCart extends Component {
                             `;
                           })
                           .join('')}`
-                    : '<p class="element-empty">Bucket is empty</p>'
+                    : '<p class="element-empty">Shopping Cart is empty</p>'
                 }
                      </ul>`;
   }
