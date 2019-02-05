@@ -63,17 +63,17 @@ const PhoneService = {
         this._dataFromServer
       );
 
+      let orderedPhones = this._sort(orderValue, filteredPhones);
       let pageCount = Math.ceil(filteredPhones.length / itemsAmount);
 
-      filteredPhones = filteredPhones.filter((item, index) => {
+      orderedPhones = orderedPhones.filter((item, index) => {
         return (
           index >= currentPage * itemsAmount &&
           index < currentPage * itemsAmount + itemsAmount
         );
       });
 
-      let phones = this._sort(orderValue, filteredPhones);
-      callback(phones, pageCount);
+      callback(orderedPhones, pageCount);
     });
   },
 
