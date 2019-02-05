@@ -64,7 +64,6 @@ const PhoneService = {
       );
 
       let pageCount = Math.ceil(filteredPhones.length / itemsAmount);
-      console.log(pageCount);
 
       filteredPhones = filteredPhones.filter((item, index) => {
         return (

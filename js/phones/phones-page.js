@@ -37,6 +37,7 @@ export default class PhonesPage {
       (phones, pageCount) => {
         this._viewer.hide();
         this._catalog.show(phones);
+
         this._pageButtons.updatePageCount(pageCount);
       }
     );
@@ -78,6 +79,7 @@ export default class PhonesPage {
     });
 
     this._phoneFilter.subscribe('input-enter', () => {
+      this._pageButtons.resetCurrentPage();
       this._showPhones();
     });
   }
