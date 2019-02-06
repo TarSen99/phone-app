@@ -16,71 +16,64 @@ const compareByDate = (a, b) => {
   }
 };
 
-const getDataFromServer = (id, callback) => {
-  xhr.open(
-    'GET',
-    `https://mate-academy.github.io/phone-catalogue-static/phones/${id}.json`,
-    true
-  );
+const _getDataFromServer = id => {
+  return new Promise((resolve, reject) => {
+    xhr.open(
+      'GET',
+      `https://mate-academy.github.io/phone-catalogue-static/phones/${id}.json`,
+      true
+    );
 
-  xhr.onload = function() {
-    PhoneService._dataFromServer = JSON.parse(this.responseText);
-    callback();
-  };
-
-  xhr.onloadend = function() {
-    if (xhr.status !== 200) {
-      console.log(`${xhr.status} : ${xhr.statusText}`);
-    }
-  };
-
-  xhr.send();
-};
-
-const PhoneService = {
-  _dataFromServer: null,
-
-  getAll(
-    setLoadingState,
-    {
-      filterValue = '',
-      orderValue = '',
-      itemsAmount = 10,
-      currentPage = 0
-    } = {},
-    callback
-  ) {
-    setLoadingState();
-    const phonesListId = 'phones';
-
-    getDataFromServer(phonesListId, () => {
-      if (!this._dataFromServer) {
+    xhr.onload = function() {
+      if (xhr.status !== 200) {
+        reject(`${xhr.status} : ${xhr.statusText}`);
         return;
       }
 
-      let filteredPhones = this._filterPhones(
-        filterValue,
-        this._dataFromServer
-      );
+      let dataFromServer = JSON.parse(this.responseText);
+      resolve(dataFromServer);
+    };
+
+    xhr.send();
+  });
+};
+
+const PhoneService = {
+  getAll({
+    filterValue = '',
+    orderValue = '',
+    itemsAmount = 10,
+    currentPage = 0
+  } = {}) {
+    const phonesListId = 'phones';
+
+    return _getDataFromServer(phonesListId).then(dataFromServer => {
+      let filteredPhones = this._filterPhones(filterValue, dataFromServer);
 
       let orderedPhones = this._sort(orderValue, filteredPhones);
       let pageCount = Math.ceil(filteredPhones.length / itemsAmount);
 
-      orderedPhones = orderedPhones.filter((item, index) => {
+      let phones = orderedPhones.filter((item, index) => {
         return (
           index >= currentPage * itemsAmount &&
           index < currentPage * itemsAmount + itemsAmount
         );
       });
 
-      callback(orderedPhones, pageCount);
-    });
+      return { phones, pageCount };
+    })
+      .catch((error) => {
+        console.error(error);
+
+        return {
+          phones: [],
+          pageCount: 0
+        };
+      });
   },
 
-  getById(phoneId, callback) {
-    getDataFromServer(phoneId, () => {
-      callback(this._dataFromServer);
-    });
+  getById(phoneId) {
+    return _getDataFromServer(phoneId);
   },
 
   _sort(orderValue, phones) {

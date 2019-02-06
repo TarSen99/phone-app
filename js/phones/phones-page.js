@@ -31,16 +31,15 @@ export default class PhonesPage {
       currentPage: this._pageButtons.getCurrentPage()
     };
 
-    PhoneService.getAll(
-      this._catalog._renderWhileLoading.bind(this._catalog),
-      searchSettings,
-      (phones, pageCount) => {
-        this._viewer.hide();
-        this._catalog.show(phones);
+    this._catalog._renderWhileLoading();
 
-        this._pageButtons.updatePageCount(pageCount);
-      }
-    );
+    PhoneService.getAll(searchSettings)
+      .then(({ phones, pageCount }) => {
+          this._viewer.hide();
+          this._catalog.show(phones);
+
+          this._pageButtons.updatePageCount(pageCount);
+    });
   }
 
   _initPhoneAmount() {
@@ -112,7 +111,9 @@ export default class PhonesPage {
     });
 
     this._catalog.subscribe('phone-selected', phoneId => {
-      PhoneService.getById(phoneId, phoneDetails => {
+      let detailsPromise = PhoneService.getById(phoneId);
+
+      detailsPromise.then(phoneDetails => {
         this._phoneAmount.hide();
         this._pageButtons.hide();
         this._catalog.hide();
