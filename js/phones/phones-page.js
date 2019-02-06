@@ -91,16 +91,21 @@ export default class PhonesPage {
 
   _initViewer() {
     this._viewer = new PhoneViewer({
-      element: document.querySelector('[data-component="phone-viewer"]')
+      element: document.querySelector(
+        '[data-component="phone-viewer"]')
     });
 
-    this._viewer.subscribe('back-button-clicked', () => {
+    this._viewer.subscribe(
+      'back-button-clicked',
+      () => {
       this._pageButtons.show();
       this._phoneAmount.show();
       this._showPhones();
     });
 
-    this._viewer.subscribe('add-button-clicked', (phoneId, phoneName) => {
+    this._viewer.subscribe(
+      'add-button-clicked',
+      (phoneId, phoneName) => {
       this._shoppingCart.addNewItemToList(phoneId, phoneName);
     });
   }
@@ -110,10 +115,12 @@ export default class PhonesPage {
       element: document.querySelector('[data-component="phone-catalog"]')
     });
 
-    this._catalog.subscribe('phone-selected', phoneId => {
-      let detailsPromise = PhoneService.getById(phoneId);
+    this._catalog.subscribe(
+      'phone-selected',
+        phoneId => {
 
-      detailsPromise.then(phoneDetails => {
+        PhoneService.getById(phoneId).then(
+          phoneDetails => {
         this._phoneAmount.hide();
         this._pageButtons.hide();
         this._catalog.hide();

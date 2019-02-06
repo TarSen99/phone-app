@@ -17,25 +17,10 @@ const compareByDate = (a, b) => {
 };
 
 const _getDataFromServer = id => {
-  return new Promise((resolve, reject) => {
-    xhr.open(
-      'GET',
-      `https://mate-academy.github.io/phone-catalogue-static/phones/${id}.json`,
-      true
-    );
-
-    xhr.onload = function() {
-      if (xhr.status !== 200) {
-        reject(`${xhr.status} : ${xhr.statusText}`);
-        return;
-      }
-
-      let dataFromServer = JSON.parse(this.responseText);
-      resolve(dataFromServer);
-    };
-
-    xhr.send();
-  });
+  return fetch(`https://mate-academy.github.io/phone-catalogue-static/phones/${id}.json`)
+    .then((response) => {
+      return response.json();
+    });
 };
 
 const PhoneService = {
@@ -49,7 +34,6 @@ const PhoneService = {
 
     return _getDataFromServer(phonesListId).then(dataFromServer => {
       let filteredPhones = this._filterPhones(filterValue, dataFromServer);
-
       let orderedPhones = this._sort(orderValue, filteredPhones);
       let pageCount = Math.ceil(filteredPhones.length / itemsAmount);
 
